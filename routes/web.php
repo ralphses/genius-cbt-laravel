@@ -15,7 +15,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('frontend.home');
+});
+
+Route::prefix('students')->group(function () {
+
+    Route::prefix('/register')->group(function () {
+
+        Route::view('/', 'frontend.students.student-register-start')
+            ->name('student.register.start');
+
+        Route::view('/faculty', 'frontend.students.student-register-faculty')
+            ->name('student.register.faculty');
+
+        Route::view('/department', 'frontend.students.student-register-department')
+            ->name('student.register.department');
+
+        Route::view('/courses', 'frontend.students.student-register-courses')
+            ->name('student.register.courses');
+
+    });
+
 });
 
 Route::get('/dashboard', function () {
