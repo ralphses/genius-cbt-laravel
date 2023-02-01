@@ -40,8 +40,66 @@ Route::prefix('students')->group(function () {
 
 Route::prefix('dashboard')->group(function () {
 
-    Route::view('/', 'backend.dashboard');
+    Route::view('/', 'backend.dashboard')
+        ->name('dashboard');
+
+    //Route for Courses
+    Route::prefix('courses')->group(function () {
+
+        Route::view('/', 'backend.course.all')
+            ->name('course.all');
+
+        Route::view('/add', 'backend.course.add')
+            ->name('course.add');
+
+        Route::view('/update/{id?}', 'backend.course.update')
+            ->name('course.update');
+    });
+
+    Route::prefix('students')->group(function () {
+
+        Route::view('/', 'backend.students.all')
+            ->name('students.all');
+
+        Route::view('/view/{id}', 'backend.students.single')
+            ->name('student.view');
+
+        Route::view('/update/{id}', 'backend.students.update')
+            ->name('student.update');
+    });
+
+    Route::prefix('staff')->group(function () {
+
+        Route::view('/', 'backend.staff.all')
+            ->name('staff.all');
+
+        Route::view('/view/{id}', 'backend.staff.single')
+            ->name('staff.view');
+    });
+
+    Route::prefix('quiz')->group(function () {
+
+        Route::view('/', 'backend.quiz.all')
+            ->name('quiz.all');
+
+        Route::view('/add', 'backend.quiz.add')
+            ->name('quiz.new');
+
+        Route::view('/view/{id}', 'backend.quiz.single')
+            ->name('quiz.view');
+    });
+
+    Route::prefix('school')->group(function() {
+
+        Route::view('/', 'backend.school.settings')
+            ->name('school.settings');
+    });
+
+
+
 });
+
+
 
 
 Route::middleware('auth')->group(function () {

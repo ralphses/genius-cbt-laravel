@@ -48,8 +48,6 @@
 <body class=" fixed-layout">
 
 <div class="preloader">
-
-
     <div class="sk-bounce">
         <div class="sk-bounce-dot"></div>
         <div class="sk-bounce-dot"></div>
@@ -219,6 +217,18 @@
                          id="navbarsExample03">
                         <ul class="nav navbar-nav">
                             <li class="nav-item dropdown active">
+                                <a href="{{ route('students.all') }}" class="nav-link">Students</a>
+                            </li>
+                            <li class="nav-item dropdown active">
+                                <a href="{{ route('course.all') }}" class="nav-link">Courses</a>
+                            </li>
+                            <li class="nav-item dropdown active">
+                                <a href="{{ route('staff.all') }}" class="nav-link">Staff</a>
+                            </li>
+                            <li class="nav-item dropdown active">
+                                <a href="{{ route('quiz.all') }}" class="nav-link">Quiz</a>
+                            </li>
+                            <li class="nav-item dropdown active">
                                 <a href="#"
                                    class="nav-link dropdown-toggle"
                                    data-toggle="dropdown">Student</a>
@@ -249,6 +259,7 @@
                                        href="fixed-student-pay.html">Payment</a>
                                 </div>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -283,10 +294,38 @@
                 <ul class="sidebar-menu sm-active-button-bg">
                     <li class="sidebar-menu-item active">
                         <a class="sidebar-menu-button"
-                           href="fixed-student-dashboard.html">
-                            <i class="sidebar-menu-icon
-                                        sidebar-menu-icon--left material-icons">account_box</i>
-                            Student
+                           href="">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Students
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Courses
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Staff
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Quiz
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="{{ route('school.settings') }}">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Settings
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item active">
+                        <a class="sidebar-menu-button"
+                           href="">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">account_box</i>Logout
                         </a>
                     </li>
                 </ul>
@@ -314,7 +353,7 @@
 <script src="{{ asset('assets/backend/vendor/material-design-kit.js') }}"></script>
 
 <!-- App JS -->
-<script src="{{ 'assets/backend/js/app.js' }}"></script>
+<script src="{{ asset('/assets/backend/js/app.js') }}"></script>
 
 <!-- Highlight.js -->
 <script src="{{ asset('assets/backend/js/hljs.js') }}"></script>
@@ -333,6 +372,80 @@
 <!-- Student Dashboard Page JS -->
 <!-- <script src="assets/js/chartjs-rounded-bar.js"></script> -->
 <script src="{{ asset('assets/backend/js/page.student-dashboard.js') }}"></script>
+
+
+
+<div class="modal fade"
+     id="editQuiz">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title text-white">Edit Question</h4>
+                <button type="button"
+                        class="close text-white"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#">
+                    <div class="form-group row">
+                        <label for="qtitle"
+                               class="col-form-label form-label col-md-3">Title:</label>
+                        <div class="col-md-9">
+                            <input id="qtitle"
+                                   type="text"
+                                   class="form-control"
+                                   value="Database Access">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="type"
+                               class="col-form-label form-label col-md-3">Type:</label>
+                        <div class="col-md-4">
+                            <select id="type"
+                                    class="custom-control custom-select form-control">
+                                <option value="1">Input</option>
+                                <option value="2">Textarea</option>
+                                <option value="3">Checkbox</option>
+                                <option value="3">Radio</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label form-label col-md-3">Answers:</label>
+                        <div class="col-md-9">
+                            <a href="#"
+                               class="btn btn-default"><i class="material-icons">add</i> Add Answer</a>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="touch-spin-2"
+                               class="col-form-label form-label col-md-3">Question Score:</label>
+                        <div class="col-md-4">
+                            <input id="touch-spin-2"
+                                   data-toggle="touch-spin"
+                                   data-min="0"
+                                   data-max="100"
+                                   data-step="5"
+                                   type="text"
+                                   value="50"
+                                   name="demo2"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-md-8 offset-md-3">
+                            <button type="submit"
+                                    class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 
