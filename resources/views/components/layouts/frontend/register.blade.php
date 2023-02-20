@@ -16,12 +16,6 @@
                         <div class="form-group">
                             <input type="email" class="form-control" placeholder="Email Addresss">
                         </div>
-                        <div class="mb-4">
-                            <select class="form-control form-select" id="select-school">
-                                <option selected>Select school</option>
-                                <option value="0">New School</option>
-                            </select>
-                        </div>
 
                         <div class="form-group" id="new-school" style="display: none">
                             <input type="text" class="form-control" placeholder="New School">

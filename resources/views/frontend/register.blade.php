@@ -8,8 +8,4 @@
     @component('components.layouts.frontend.register')
     @endcomponent
 
-
-    @component('components.layouts.frontend.footer')
-    @endcomponent
-
 @endsection

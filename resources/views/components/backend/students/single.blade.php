@@ -19,11 +19,11 @@
                                 <div class="col-md-9">
                                     <div class="media align-items-center">
                                         <div class="d-flex mr-3 align-self-center">
-                                                                <span class="avatar avatar-lg">
-                                                                    <span class="avatar-title rounded">
-                                                                        <i class="material-icons">photo</i>
-                                                                    </span>
-                                                                </span>
+                                            <span class="avatar avatar-lg">
+                                                <span class="avatar-title rounded">
+                                                    <i class="material-icons">photo</i>
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

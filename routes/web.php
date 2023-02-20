@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\StudentsController;
+use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,17 +26,29 @@ Route::prefix('students')->group(function () {
 
     Route::prefix('/register')->group(function () {
 
-        Route::view('/', 'frontend.students.student-register-start')
+        Route::get('/', [StudentsController::class, 'create'])
             ->name('student.register.start');
+        
+        Route::post('/', [StudentsController::class, 'save'])
+            ->name('student.register.start.save');
 
-        Route::view('/faculty', 'frontend.students.student-register-faculty')
+        Route::get('/faculty', [StudentsController::class, 'selectFaculty'])
             ->name('student.register.faculty');
 
-        Route::view('/department', 'frontend.students.student-register-department')
+        Route::post('/faculty', [StudentsController::class, 'registerFaculty'])
+            ->name('student.register.faculty.save');
+     
+        Route::get('/department', [StudentsController::class, 'selectDepartment'])
             ->name('student.register.department');
 
-        Route::view('/courses', 'frontend.students.student-register-courses')
+        Route::post('/department', [StudentsController::class, 'registerDepartment'])
+            ->name('student.register.department.save');
+
+        Route::get('/courses', [StudentsController::class, 'selectCourses'])
             ->name('student.register.courses');
+
+        Route::post('/courses', [StudentsController::class, 'registerCourses'])
+            ->name('student.register.courses.save');
 
     });
 
@@ -42,32 +58,84 @@ Route::prefix('dashboard')->group(function () {
 
     Route::view('/', 'backend.dashboard')
         ->name('dashboard');
+    
+    //Routes for Faculty
+    Route::prefix('faculty')->group(function () {
+
+        Route::get('/', [FacultyController::class, 'index'])
+            ->name('faculty.all');
+        
+        Route::get('/add', [FacultyController::class, 'create'])
+            ->name('faculty.add');
+        
+        Route::post('/add', [FacultyController::class, 'store'])
+            ->name('faculty.store');
+
+        Route::delete('/remove/{id}', [FacultyController::class, 'destroy'])
+            ->name('faculty.delete');
+    });
+
+    //Routes for Departments
+    Route::prefix('department')->group(function () {
+
+        Route::get('/', [DepartmentController::class, 'index'])
+            ->name('department.all');
+        
+        Route::get('/add', [DepartmentController::class, 'create'])
+            ->name('department.add');
+        
+        Route::post('/add', [DepartmentController::class, 'store'])
+            ->name('department.store');
+        
+        Route::delete('/delete/{id}', [DepartmentController::class, 'destroy'])
+            ->name('department.delete');
+    });
 
     //Route for Courses
     Route::prefix('courses')->group(function () {
 
-        Route::view('/', 'backend.course.all')
+        Route::get('/', [CourseController::class, 'index'])
             ->name('course.all');
 
-        Route::view('/add', 'backend.course.add')
+        Route::get('/add', [CourseController::class, 'create'])
             ->name('course.add');
+        
+        Route::delete('/delete/{id}', [CourseController::class, 'destroy'])
+            ->name('course.delete');
 
-        Route::view('/update/{id?}', 'backend.course.update')
+        Route::post('/add', [CourseController::class, 'store'])
+            ->name('course.store');
+
+        Route::get('/update/{id}', [CourseController::class, 'edit'])
+            ->name('course.update');
+        
+        Route::patch('/update/{id}', [CourseController::class, 'update'])
             ->name('course.update');
     });
 
+    //Routes for Students
     Route::prefix('students')->group(function () {
 
-        Route::view('/', 'backend.students.all')
+        Route::get('/add', [StudentsController::class, 'new'])
+            ->name('student.add');
+
+        Route::post('/add', [StudentsController::class, "store"])
+            ->name('student.store');
+
+        Route::get('/', [StudentsController::class, 'index'])
             ->name('students.all');
 
-        Route::view('/view/{id}', 'backend.students.single')
+        Route::get('/view/{id}', [StudentsController::class, 'show'])
             ->name('student.view');
+        
+        Route::delete('/delete/{id}', [StudentsController::class, 'destroy'])
+            ->name('student.delete');
 
         Route::view('/update/{id}', 'backend.students.update')
             ->name('student.update');
     });
 
+    //Routes for Staff
     Route::prefix('staff')->group(function () {
 
         Route::view('/', 'backend.staff.all')
@@ -77,6 +145,7 @@ Route::prefix('dashboard')->group(function () {
             ->name('staff.view');
     });
 
+    //Routes for Quiz
     Route::prefix('quiz')->group(function () {
 
         Route::view('/', 'backend.quiz.all')
@@ -98,14 +167,4 @@ Route::prefix('dashboard')->group(function () {
 
 
 });
-
-
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 require __DIR__.'/auth.php';

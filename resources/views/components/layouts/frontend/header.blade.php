@@ -3,15 +3,14 @@
 
     <div class="container-fluid">
         <div class="d-flex align-items-center">
-            <div class="site-logo mr-auto w-25"><a href="{{ '/' }}">GeniusCBT</a></div>
+            <div class="site-logo mr-auto w-25"><a href="{{ '/' }}"><span class="text-white">GeniusCBT</span></a></div>
             <div class="mx-auto text-center">
                 <nav class="site-navigation position-relative text-right"
                      role="navigation">
                     <ul class="site-menu main-menu js-clone-nav mx-auto d-none
                   d-lg-block m-0 p-0">
                         <li><a href="/" class="nav-link">Home</a></li>
-                        <li><a href="#courses-section" class="nav-link">About Us</a></li>
-                        <li><a href="{{ route('student.register.start') }}" class="nav-link">New student</a></li>
+                        <li><a href="{{ route('student.register.start') }}" class="nav-link">Add Student</a></li>
                         <li><a href="{{ route('login') }}" class="nav-link">Login</a></li>
                     </ul>
                 </nav>

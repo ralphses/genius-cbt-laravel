@@ -5,7 +5,7 @@
     @component('components.layouts.frontend.header')
     @endcomponent
 
-    @component('components.layouts.frontend.student.register-department')
+    @component('components.layouts.frontend.student.register-department', ['departments' => $departments])
     @endcomponent
 
 

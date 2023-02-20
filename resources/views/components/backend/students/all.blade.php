@@ -5,8 +5,12 @@
         <li class="breadcrumb-item active">All</li>
     </ol>
 
-    <h1 class="h2">Students</h1>
+    <div class="d-flex justify-content-between">
+        
+        <h1 class="h2">Students</h1>
+        <a href="{{ route('student.add') }}" class="btn btn-success">Add Student</a>
 
+    </div>
 
     <div class="card">
         <div class="card-body">
@@ -21,62 +25,49 @@
                          data-toggle="lists"
                          data-lists-values='["js-lists-values-employee-name"]'>
 
-                        <form action="" method="GET">
-                            <div class="search-form search-form--light mb-3">
-                                <input type="text"
-                                       class="form-control search"
-                                       name="keywords"
-                                       placeholder="Search students">
-                                <button class="btn"
-                                        type="submit"
-                                        role="button"><i class="material-icons">search</i></button>
-                            </div>
-                        </form>
-
                         <table class="table mb-0">
                             <thead>
                             <tr>
 
-
+                                <th style="width: 10%;">#</th>
                                 <th style="width: 20%;">Matric</th>
                                 <th style="width: 40%;">Name</th>
 
                                 <th style="width: 15%;">Department</th>
                                 <th style="width: 10%;">Level</th>
+                                <th style="width: 10%;">Status</th>
                                 <th style="width: 20%;">Actions</th>
                             </tr>
                             </thead>
                             <tbody class="list"
                                    id="search">
+                            
+                            @foreach ($students as $student )
+                                <tr>
+                                    <td><span class="js-lists-values-employee-name">{{ ++$loop->index }}</span></td>
+                                    <td><span class="js-lists-values-employee-name">{{ $student->matric }}</span></td>
+                                    <td><span class="js-lists-values-employee-name">{{ $student->name }}</span></td>
+                                    <td>{{ $student->department->name ?? "" }}</td>
+                                    <td>{{ $student->level }}</td>
+                                    <td>{{ $student->status ? "Activated" : "Inactive" }}</td>
+                                    <td>
+                                        <div class="d-flex d-inline-flex">
 
-                            <tr>
+                                            <button  style="background-color: transparent; border: transparent"><a href="{{ route('student.view', ['id' => $student->id]) }}" class="text-muted" data-bs-toggle="tooltip" title="View"><i class="fa fa-eye" ></i></a></button>
 
-                                <td>
+                                            <form action="{{ route('student.delete', ['id' => $student->id]) }}" method="POST">
 
-                                    <span class="js-lists-values-employee-name">Kalum Atherton</span>
+                                                @csrf
+                                                @method('DELETE')
 
-                                </td>
+                                                <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Delete"><i class="fa fa-trash" style="color: red"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
 
-                                <td><small class="text-muted">3 days ago</small></td>
-                                <td>&dollar;12,402</td>
-                                <td><a href="" class="text-muted"><i class="material-icons">more_vert</i></a></td>
-                                <td>
-                                    <div class="d-flex d-inline-flex">
-
-                                        <button  style="background-color: transparent; border: transparent"><a href="{{ route('student.view', ['id' => 1]) }}" class="text-muted" data-bs-toggle="tooltip" title="View"><i class="fa fa-eye" ></i></a></button>
-
-                                        <form action="" method="POST">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Delete"><i class="fa fa-trash" style="color: red"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-
-
+                         
                             </tbody>
                         </table>
                     </div>

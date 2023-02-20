@@ -14,13 +14,14 @@
                 <p>Add a new course as represented by a real course being taken by students in your school. <br><br><strong>NOTE:</strong> Course titles must be unique</p>
             </div>
             <div class="col-lg-6 d-flex align-items-center">
-                <form class="flex" action="" method="POST">
+                <form class="flex" action="{{ route('course.update', ['id' => $course->id]) }}" method="POST">
 
                     <div class="form-group">
                         <label class="form-label"
                                for="course-title">Title:</label>
                         <input type="text"
                                class="form-control"
+                               value="{{ $course->title }}"
                                id="course-title"
                                name="course-title"
                                placeholder="Course title here ..">
@@ -30,11 +31,15 @@
                         @endif
                     </div>
 
+                    @csrf
+                    @method('PATCH')
+
                     <div class="form-group">
                         <label class="form-label"
                                for="course-code">Code:</label>
                         <input type="text"
                                class="form-control"
+                               value="{{ $course->code }}"
                                id="course-code"
                                name="course-code"
                                placeholder="Course code here ..">
@@ -50,6 +55,7 @@
                         <input type="number"
                                class="form-control"
                                id="course-unit"
+                               value="{{ $course->unit }}"
                                name="course-unit"
                                placeholder="Course credit unit here ..">
 
@@ -62,9 +68,11 @@
                         <label class="form-label"
                                for="course-semester">Semester:</label>
                         <select class="form-select custom-select" id="course-semester" name="course-semester">
-                            <option selected>select semester</option>
+                            <option selected value="{{ $course->semester }}">{{ App\Models\utility\Utility::SEMESTER[$course->semester] }}</option>
                             @foreach(\App\Models\utility\Utility::SEMESTER as $key => $semester)
-                                <option value="{{ $key }}">{{ $semester }}</option>
+                                @if ($key != $course->semester)
+                                    <option value="{{ $key }}">{{ $semester }}</option>  
+                                @endif
                             @endforeach
                         </select>
 
@@ -77,8 +85,12 @@
                         <label class="form-label"
                                for="course-department">Department:</label>
                         <select class="form-select custom-select" id="course-department" name="course-department">
-                            <option selected>select department</option>
-                            <option value="0">Computer Science</option>
+                            <option selected value="{{ $course->department->id }}">{{ $course->department->name }}</option>
+                           @foreach ($departments as $department)
+                                @if ($department->id != $course->department->id)
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endif
+                           @endforeach
                         </select>
 
                         @if($errors->any('course-department'))
@@ -90,10 +102,12 @@
                         <label class="form-label"
                                for="course-level">Level:</label>
                         <select class="form-select custom-select" id="course-level" name="course-level">
-                            <option selected>select level</option>
+                            <option selected value="{{ $course->level }}">{{ \App\Models\utility\Utility::LEVELS[$course->level] }}</option>
 
                             @foreach(\App\Models\utility\Utility::LEVELS as $key => $level)
-                                <option value="{{ $key }}">{{ $level }}</option>
+                                @if ($key != $course->level)
+                                    <option value="{{ $key }}">{{ $level }}</option>
+                                @endif
                             @endforeach
                         </select>
 
@@ -107,7 +121,7 @@
 
                         <div class="custom-controls-stacked">
                             <div class="custom-control custom-radio">
-                                <input id="yes" name="course-general" type="radio" class="custom-control-input">
+                                <input id="yes" value="{{ 1 }}" name="course-general" type="radio" class="custom-control-input">
                                 <label for="yes" class="custom-control-label">Yes</label>
                             </div>
                             <div class="custom-control custom-radio">

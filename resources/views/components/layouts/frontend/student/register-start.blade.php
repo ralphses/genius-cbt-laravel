@@ -8,35 +8,73 @@
 
 
                 <div class="col-lg-7 m-0 " data-aos="fade-up" data-aos-delay="500">
-                    <form action="" method="post" class="form-box">
-                        <h3 class="h4 text-black mb-4">Register with your school here!</h3>
+                    <form action="{{ route('student.register.start.save') }}" method="post" class="form-box" enctype="multipart/form-data">
+
+                        @csrf
+
+                        <h3 class="h4 text-black mb-4">New Student!</h3>
+
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Full Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Email Addresss">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Matric No.">
-                        </div>
-                        <div class="mb-4">
-                            <select class="form-control form-select" id="select-school">
-                                <option selected>Select school</option>
-                            </select>
+                            <input type="text" class="form-control" value="{{ old('name') }}" name="name" placeholder="Full Name">
+
+                            @if($errors->any('name'))
+                                <p style="color: red; font-size: small">{{$errors->first('name')}}</p>
+                            @endif
                         </div>
 
-                        <div class="form-group" id="new-school" style="display: none">
-                            <input type="text" class="form-control" placeholder="New School">
+                        <div class="form-group">
+                            <input type="text" class="form-control" value="{{ old('matric') }}" name="matric" placeholder="Matric No.">
+                            @if($errors->any('matric'))
+                                <p style="color: red; font-size: small">{{$errors->first('matric')}}</p>
+                            @endif
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Password">
+                            <input type="email" class="form-control" value="{{ old('email') }}" name="email" placeholder="Email Addresss">
+                            @if($errors->any('email'))
+                                <p style="color: red; font-size: small">{{$errors->first('email')}}</p>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+
+                            @if($errors->any('password'))
+                                <p style="color: red; font-size: small">{{$errors->first('password')}}</p>
+                            @endif
+
                         </div>
                         <div class="form-group mb-4">
-                            <input type="password" class="form-control" placeholder="Re-type Password">
+                            <input type="password" class="form-control" name="password_confirmation" placeholder="Re-type Password">
+
+                            @if($errors->any('password_confirmation'))
+                                <p style="color: red; font-size: small">{{$errors->first('password_confirmation')}}</p>
+                            @endif
                         </div>
                         <div class="form-group">
+                           <select class="form-control form-select" name="level">
+                            <option selected value=>Select level ..</option>
+                            @foreach (App\Models\utility\Utility::LEVELS as  $key => $level )
+                                <option value="{{ $level }}">{{ $level }}</option>
+                            @endforeach
+                           </select>
+
+                            @if($errors->any('level'))
+                                <p style="color: red; font-size: small">{{$errors->first('level')}}</p>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Select Image</label>
+                            <input type="file" class="form-control form-input" name="image">
+
+                            @if($errors->any('image'))
+                                <p style="color: red; font-size: small">{{$errors->first('image')}}</p>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
                             <input type="submit" class="btn btn-primary btn-pill"
-                                   value="Submit">
+                                   value="Get Started">
                         </div>
                     </form>
                 </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.backend. course.all')
+    @component('components.backend. course.all', ['courses' => $courses])
     @endcomponent
 
 @endsection

@@ -26,4 +26,6 @@ class Utility
         'Test',
     ];
 
+    public const SCHOOL_NAME = "FEDERAL UNIVERSITY OF LAFIA";
+
 }

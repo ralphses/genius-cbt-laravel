@@ -14,7 +14,9 @@
                 <p>Add a new course as represented by a real course being taken by students in your school. <br><br><strong>NOTE:</strong> Course titles must be unique</p>
             </div>
             <div class="col-lg-6 d-flex align-items-center">
-                <form class="flex" action="" method="POST">
+                <form action="{{ route('course.store') }}" class="flex" action="" method="POST">
+
+                    @csrf
 
                     <div class="form-group">
                         <label class="form-label"
@@ -62,8 +64,8 @@
                         <label class="form-label"
                                for="course-semester">Semester:</label>
                         <select class="form-select custom-select" id="course-semester" name="course-semester">
-                            <option selected>select semester</option>
-                            @foreach(\App\Models\utility\Utility::SEMESTER as $key => $semester)
+                            <option selected value>select semester</option>
+                            @foreach($semesters as $key => $semester)
                                 <option value="{{ $key }}">{{ $semester }}</option>
                             @endforeach
                         </select>
@@ -77,8 +79,10 @@
                         <label class="form-label"
                                for="course-department">Department:</label>
                         <select class="form-select custom-select" id="course-department" name="course-department">
-                            <option selected>select department</option>
-                            <option value="0">Computer Science</option>
+                            <option selected value>select department</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                            @endforeach
                         </select>
 
                         @if($errors->any('course-department'))
@@ -90,7 +94,7 @@
                         <label class="form-label"
                                for="course-level">Level:</label>
                         <select class="form-select custom-select" id="course-level" name="course-level">
-                            <option selected>select level</option>
+                            <option selected value>select level</option>
 
                             @foreach(\App\Models\utility\Utility::LEVELS as $key => $level)
                                 <option value="{{ $key }}">{{ $level }}</option>
@@ -107,11 +111,11 @@
 
                         <div class="custom-controls-stacked">
                             <div class="custom-control custom-radio">
-                                <input id="yes" name="course-general" type="radio" class="custom-control-input">
+                                <input id="yes" value="1" name="course-general" type="radio" class="custom-control-input">
                                 <label for="yes" class="custom-control-label">Yes</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input id="No" name="course-general" type="radio" class="custom-control-input" checked>
+                                <input id="No" value="0" name="course-general" type="radio" class="custom-control-input" checked>
                                 <label for="No" class="custom-control-label">No</label>
                             </div>
                         </div>

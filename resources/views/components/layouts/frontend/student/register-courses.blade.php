@@ -5,40 +5,23 @@
             <div class="row align-items-center d-flex justify-content-center">
                 <!-- <div class="col-12"> -->
                 <!-- <div class="row align-items-center"> -->
-
-
                 <div class="col-lg-7 m-0 justify-center" data-aos="fade-up" data-aos-delay="500">
-                    <form action="" method="post" class="form-box">
+                    <form action="{{ route('student.register.courses.save') }}" method="post" class="form-box">
                         <h4 class="h4 text-black mb-4">Select Courses</h4>
 
+                        @csrf
+
                         <div class="row">
-                            <div class="m-lg-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Default checkbox
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                    <label class="form-check-label" for="flexCheckChecked">
-                                        Checked checkbox
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="m-lg-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Default checkbox
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                    <label class="form-check-label" for="flexCheckChecked">
-                                        Checked checkbox
-                                    </label>
-                                </div>
+                            <div class="m-lg-4 d-flex justify-center">
+                               @foreach ($courses as $course)
+                                <div class="form-check mr-4">
+                                        <input class="form-check-input" name="courses[]" type="checkbox" value="{{ $course->id }}" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            {{ $course->title }}
+                                        </label>
+                                    </div>
+                               @endforeach
+                                                               
                             </div>
 
                         </div>

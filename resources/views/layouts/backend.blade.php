@@ -47,21 +47,13 @@
 
 <body class=" fixed-layout">
 
-<div class="preloader">
-    <div class="sk-bounce">
-        <div class="sk-bounce-dot"></div>
-        <div class="sk-bounce-dot"></div>
-    </div>
-
-    <!-- More spinner examples at https://github.com/tobiasahlin/SpinKit/blob/master/examples.html -->
-</div>
 
 <!-- Header Layout -->
 <div class="mdk-header-layout js-mdk-header-layout">
 
     <!-- Header -->
 
-    <div id="header"
+    <div style="background-color: white;" id="header"
          class="mdk-header bg-dark js-mdk-header m-0"
          data-fixed
          data-effects="waterfall">
@@ -69,8 +61,8 @@
 
             <!-- Navbar -->
             <nav id="default-navbar"
-                 class="navbar navbar-expand navbar-dark bg-primary m-0">
-                <div class="container">
+                 class="navbar navbar-expand navbar-dark bg-primary m-0" style="background-color: white;">
+                <div class="container" style="background-color: white;">
                     <!-- Toggle sidebar -->
                     <button class="navbar-toggler d-block"
                             data-toggle="sidebar"
@@ -82,10 +74,7 @@
                     <!-- Brand -->
                     <a href="fixed-student-dashboard.html"
                        class="navbar-brand">
-                        <img src="{{ asset('assets/backend/images/logo/white.svg') }}"
-                             class="mr-2"
-                             alt="LearnPlus" />
-                        <span class="d-none d-xs-md-block">LearnPlus</span>
+                        <span class="d-none d-xs-md-block"><img class="mr-2" src="{{ asset('assets/frontend/images/fulogo.png') }}" alt="fulafia-logo"></span>
                     </a>
 
                     <!-- Search -->
@@ -215,8 +204,8 @@
 
                     <div class="navbar-collapse collapse"
                          id="navbarsExample03">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item dropdown active">
+                        <ul class="nav navbar-na">
+                            <li class="nav-item dropdown active text-black">
                                 <a href="{{ route('students.all') }}" class="nav-link">Students</a>
                             </li>
                             <li class="nav-item dropdown active">
@@ -225,6 +214,14 @@
                             <li class="nav-item dropdown active">
                                 <a href="{{ route('staff.all') }}" class="nav-link">Staff</a>
                             </li>
+                            <li class="nav-item dropdown active">
+                                <a href="{{ route('faculty.all') }}" class="nav-link">Faculty</a>
+                            </li>
+
+                            <li class="nav-item dropdown active">
+                                <a href="{{ route('department.all') }}" class="nav-link">Departments</a>
+                            </li>
+
                             <li class="nav-item dropdown active">
                                 <a href="{{ route('quiz.all') }}" class="nav-link">Quiz</a>
                             </li>
