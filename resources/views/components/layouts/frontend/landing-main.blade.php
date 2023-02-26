@@ -8,13 +8,19 @@
                     <div class="row align-items-center">
                         <div class="col-lg-5 ml-auto" data-aos="fade-up"
                              data-aos-delay="500">
-                            <form action="" method="post" class="form-box">
-                                <h3 class="h4 text-black mb-4">Sign In</h3>
+                            <form action="{{ route("student.authenticate") }}" method="post" class="form-box">
+                                
+                                @csrf
+                                <h3 class="h4 text-black mb-4">Student Sign In</h3>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Matriculation number/Staff Email">
+                                    <input type="text" name="matric" value="{{ old('matric') }}" class="form-control" placeholder="Matriculation number">
+                                    
+                                    @if($errors->any('matric'))
+                                        <p style="color: red; font-size: medium">{{ $errors->first('matric') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Password">
+                                    <input type="password" name="password" class="form-control" placeholder="Password">
                                 </div>
 
                                 <div class="form-group">
@@ -31,19 +37,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-
-    let newSchoolField = document.getElementById('new-school');
-    let selectSchool = document.getElementById('select-school');
-
-    selectSchool.addEventListener('change', () => {
-
-        if(selectSchool.options[selectSchool.selectedIndex].value === "0") {
-            newSchoolField.style.display = 'block';
-            console.log(selectSchool)
-        }
-    });
-
-</script>

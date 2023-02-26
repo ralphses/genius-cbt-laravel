@@ -7,7 +7,7 @@
           content="IE=edge">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Student - Dashboard - Fixed layout</title>
+    <title>GeniusCBT - Dashboard</title>
 
     <!-- Prevent the demo from appearing in search engines (REMOVE THIS) -->
     <meta name="robots"
@@ -90,66 +90,6 @@
                         <li class="nav-item dropdown
                                     dropdown-notifications
                                     dropdown-menu-sm-full">
-                            <button class="nav-link btn-flush
-                                        dropdown-toggle"
-                                    type="button"
-                                    data-toggle="dropdown"
-                                    data-dropdown-disable-document-scroll
-                                    data-caret="false">
-                                <i class="material-icons">notifications</i>
-                                <span class="badge badge-notifications
-                                            badge-danger">2</span>
-                            </button>
-                            <div class="dropdown-menu
-                                        dropdown-menu-right">
-                                <div data-perfect-scrollbar
-                                     class="position-relative">
-                                    <div class="dropdown-header"><strong>Messages</strong></div>
-                                    <div class="list-group
-                                                list-group-flush mb-0">
-
-                                        <a
-                                            href="fixed-student-messages.html"
-                                            class="list-group-item
-                                                    list-group-item-action
-                                                    border-left-3
-                                                    border-left-danger">
-                                                    <span class="d-flex
-                                                        align-items-center
-                                                        mb-1">
-                                                        <small
-                                                            class="text-muted">3
-                                                            minutes ago</small>
-                                                    </span>
-                                            <span class="d-flex">
-                                                        <span class="avatar
-                                                            avatar-xs mr-2">
-                                                            <span
-                                                                class="avatar-title
-                                                                rounded-circle
-                                                                bg-light">
-                                                                <i
-                                                                    class="material-icons
-                                                                    font-size-16pt
-                                                                    text-danger">account_circle</i>
-                                                            </span>
-                                                        </span>
-                                                        <span class="flex d-flex
-                                                            flex-column">
-
-                                                            <span
-                                                                class="text-black-70">Your
-                                                                profile
-                                                                information has
-                                                                not been synced
-                                                                correctly.</span>
-                                                        </span>
-                                                    </span>
-                                        </a>
-
-                                    </div>
-                                </div>
-                            </div>
                         </li>
                         <!-- // END Notifications dropdown -->
                         <!-- User dropdown -->
@@ -157,28 +97,25 @@
                             <a class="nav-link dropdown-toggle"
                                data-toggle="dropdown"
                                href="#"
-                               role="button"><img
-                                    src="{{ asset('assets/backend/images/people/50/guy-6.jpg') }}"
+                               role="button">
+                               @auth
+                                    <img src="{{ asset( 'assets/backend/images/people/50/guy-1.jpg') }}"
+                               @endauth
+                                <img src="{{ asset(session()->get('student') ? session()->get('student')->image_path : "" )}}"
+
                                     alt="Avatar"
                                     class="rounded-circle"
                                     width="40"></a>
                             <div class="dropdown-menu
                                         dropdown-menu-right">
-                                <a class="dropdown-item"
-                                   href="fixed-student-account-edit.html">
-                                    <i class="material-icons">edit</i>
-                                    Edit Account
-                                </a>
-                                <a class="dropdown-item"
-                                   href="fixed-student-profile.html">
-                                    <i class="material-icons">person</i>
-                                    Public Profile
-                                </a>
-                                <a class="dropdown-item"
-                                   href="guest-login.html">
-                                    <i class="material-icons">lock</i>
-                                    Logout
-                                </a>
+                                        <form action="{{ route('student.logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="material-icons">lock</i>
+                                                Logout
+                                            </button>
+                                        </form>
+                               
                             </div>
                         </li>
                         <!-- // END User dropdown -->
@@ -205,12 +142,17 @@
                     <div class="navbar-collapse collapse"
                          id="navbarsExample03">
                         <ul class="nav navbar-na">
+                            @auth
                             <li class="nav-item dropdown active text-black">
                                 <a href="{{ route('students.all') }}" class="nav-link">Students</a>
                             </li>
+                            @endauth
+                           
                             <li class="nav-item dropdown active">
                                 <a href="{{ route('course.all') }}" class="nav-link">Courses</a>
                             </li>
+
+                            @auth
                             <li class="nav-item dropdown active">
                                 <a href="{{ route('staff.all') }}" class="nav-link">Staff</a>
                             </li>
@@ -221,10 +163,11 @@
                             <li class="nav-item dropdown active">
                                 <a href="{{ route('department.all') }}" class="nav-link">Departments</a>
                             </li>
-
+                            @endauth
                             <li class="nav-item dropdown active">
-                                <a href="{{ route('quiz.all') }}" class="nav-link">Quiz</a>
+                                <a href="{{ route('quiz.all') }}" class="nav-link">My Quiz</a>
                             </li>
+                            @auth
                             <li class="nav-item dropdown active">
                                 <a href="#"
                                    class="nav-link dropdown-toggle"
@@ -232,30 +175,11 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item active"
                                        href="fixed-student-dashboard.html">Dashboard</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-browse-courses.html">Browse
-                                        Courses</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-view-course.html">View
-                                        Course</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-take-course.html">Take
-                                        Course</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-take-quiz.html">Take
-                                        a Quiz</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-quiz-results.html">Quiz
-                                        Results</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-my-courses.html">My
-                                        Courses</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-billing.html">Billing</a>
-                                    <a class="dropdown-item"
-                                       href="fixed-student-pay.html">Payment</a>
+                                   
                                 </div>
                             </li>
+                            @endauth
+                            
 
                         </ul>
                     </div>
@@ -270,8 +194,7 @@
             <div class="container page__container">
                 <div class="footer">
                     Copyright &copy; 2016 - <a
-                        href="http://themeforest.net/item/learnplus-learning-management-application/15287372?ref=mosaicpro">Purchase
-                        LearnPlus</a>
+                        href="{{ route('welcome') }}">FULafia CBT</a>
                 </div>
             </div>
         </div>
@@ -370,80 +293,8 @@
 <!-- <script src="assets/js/chartjs-rounded-bar.js"></script> -->
 <script src="{{ asset('assets/backend/js/page.student-dashboard.js') }}"></script>
 
-
-
-<div class="modal fade"
-     id="editQuiz">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h4 class="modal-title text-white">Edit Question</h4>
-                <button type="button"
-                        class="close text-white"
-                        data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="#">
-                    <div class="form-group row">
-                        <label for="qtitle"
-                               class="col-form-label form-label col-md-3">Title:</label>
-                        <div class="col-md-9">
-                            <input id="qtitle"
-                                   type="text"
-                                   class="form-control"
-                                   value="Database Access">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="type"
-                               class="col-form-label form-label col-md-3">Type:</label>
-                        <div class="col-md-4">
-                            <select id="type"
-                                    class="custom-control custom-select form-control">
-                                <option value="1">Input</option>
-                                <option value="2">Textarea</option>
-                                <option value="3">Checkbox</option>
-                                <option value="3">Radio</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label form-label col-md-3">Answers:</label>
-                        <div class="col-md-9">
-                            <a href="#"
-                               class="btn btn-default"><i class="material-icons">add</i> Add Answer</a>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="touch-spin-2"
-                               class="col-form-label form-label col-md-3">Question Score:</label>
-                        <div class="col-md-4">
-                            <input id="touch-spin-2"
-                                   data-toggle="touch-spin"
-                                   data-min="0"
-                                   data-max="100"
-                                   data-step="5"
-                                   type="text"
-                                   value="50"
-                                   name="demo2"
-                                   class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group row mb-0">
-                        <div class="col-md-8 offset-md-3">
-                            <button type="submit"
-                                    class="btn btn-success">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
+
+
 
 </html>

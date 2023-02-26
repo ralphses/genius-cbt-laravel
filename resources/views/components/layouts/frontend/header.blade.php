@@ -11,7 +11,7 @@
                   d-lg-block m-0 p-0">
                         <li><a href="/" class="nav-link">Home</a></li>
                         <li><a href="{{ route('student.register.start') }}" class="nav-link">Add Student</a></li>
-                        <li><a href="{{ route('login') }}" class="nav-link">Login</a></li>
+                        <li><a href="{{ route('login') }}" class="nav-link"><strong>Admin Login</strong></a></li>
                     </ul>
                 </nav>
             </div>

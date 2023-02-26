@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\NewStudentRequest;
+use App\Http\Requests\StudentAuthenticationRequest;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Faculty;
@@ -10,7 +11,6 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class StudentsController extends Controller
@@ -30,11 +30,19 @@ class StudentsController extends Controller
     }
 
     public function selectDepartment() {
-        return view('frontend.students.student-register-department', ['departments' => Department::all()]);
+
+        $faculty = session()->get('student-register')['faculty'];
+        $departments = Faculty::find($faculty)->departments;
+
+        return view('frontend.students.student-register-department', ['departments' => $departments]);
     }
 
     public function selectCourses() {
-        return view('frontend.students.student-register-courses', ['courses' => Course::all()]);
+
+        $department = session()->get('student-register')['department'];
+        $courses = Department::find($department)->courses;
+
+        return view('frontend.students.student-register-courses', ['courses' => $courses]);
     }
 
     /**
@@ -75,9 +83,6 @@ class StudentsController extends Controller
 
     public function save(NewStudentRequest $request)
     {
-        // dd($request->all());
-        session()->forget('register-complete');
-
         $request->validated();
 
         $info = $request->all(['name', 'matric', 'email', 'level']);
@@ -135,11 +140,12 @@ class StudentsController extends Controller
         if($courses) {
 
             $newStudent = Student::where('matric', $studentInfo['matric'])->first();
-            
+
             $newStudent->update(
                 [
                     'name' => $studentInfo['name'],
                     'email' => $studentInfo['email'],
+                    'status' => true,
                     'password' => $studentInfo['password'],
                     'level' => $studentInfo['level'],
                     'image_path' => $studentInfo['image'],
@@ -147,19 +153,17 @@ class StudentsController extends Controller
                 ]
             );
 
-            $allCourses = collect($courses)->map(function($course) { return Course::find($course); });
+            $allCourses = collect($courses)->map(function($course) { return Course::find($course)->id; })->all();
 
             $newStudent->courses()->attach($allCourses);
     
         }
-    
-        dd($request->all());
-        
+
+        session()->forget('student-register');
+
+        return redirect()->route('welcome');
+            
     }
-
-
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -179,6 +183,33 @@ class StudentsController extends Controller
         }
 
         return redirect(route('students.all'));
+    }
+
+    public function authenticate(StudentAuthenticationRequest $request) {
+
+        $request->validated();
+
+        $matric = $request->get('matric');
+        $password = $request->get('password');
+
+        $student = Student::where('matric', $matric)->first();
+
+        if(!(Crypt::decrypt($student->password) === $password)) {
+            return back()->withErrors(['matric' => 'Credentials do not match']);
+        }
+
+        // dd($student);
+
+        session()->put('student', $student);
+
+        return redirect(route('dashboard'));
+
+    }
+
+    public function logout(Request $request) {
+        $request->session()->flush();
+
+        return redirect(route('welcome'));
     }
 
     private function storeImage(Request $request): array|string

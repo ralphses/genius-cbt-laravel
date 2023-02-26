@@ -13,8 +13,20 @@ use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
-    public function index() {
-        return view('backend.course.all', ['courses' => Course::all()]);
+    public function index(Request $request) {
+
+        $courses = (Auth::check()) ? Course::all() : "";
+        $student = $request->session()->get('student');
+
+        if($student) {
+            $courses = $student->courses;
+        }
+
+        if(!$courses) {
+            return redirect(route('welcome'));
+        }
+
+        return view('backend.course.all', ['courses' => $courses]);
     }
 
     public function create() {
@@ -66,6 +78,7 @@ class CourseController extends Controller
         ]);
 
         $course = Course::find($id);
+
         $course->update([
             'title' => $request->get('course-title'),
             'semester' => $request->get('course-semester'),
@@ -76,5 +89,6 @@ class CourseController extends Controller
         ]);
 
         return redirect(route('course.all'));
+        
     }
 }

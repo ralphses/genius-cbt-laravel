@@ -13,18 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('course_student', function (Blueprint $table) {
+        Schema::create('quizzes', function (Blueprint $table) {
 
             $table->id();
-
-            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('course_id');
 
-            $table->foreign('student_id')->references('id')->on('students')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('title');
+            $table->string('type');
+            $table->date('date');
+
+            $table->unsignedInteger('no_options');
+            $table->unsignedInteger('no_questions');
+            $table->unsignedInteger('no_answerable_questions');
+
+
             $table->foreign('course_id')->references('id')->on('courses')->cascadeOnDelete()->cascadeOnUpdate();
 
+            $table->timestamps();
         });
-        //
     }
 
     /**
@@ -34,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_student');
+        Schema::dropIfExists('quizzes');
     }
 };

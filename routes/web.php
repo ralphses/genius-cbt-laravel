@@ -3,8 +3,8 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\StudentsController;
-use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('frontend.home');
-});
+})->name('welcome');
 
 Route::prefix('students')->group(function () {
 
@@ -52,9 +52,15 @@ Route::prefix('students')->group(function () {
 
     });
 
+    Route::post('/authenticate', [StudentsController::class, 'authenticate'])
+        ->name('student.authenticate');
+
+    Route::post('/logout', [StudentsController::class, 'logout'])
+        ->name('student.logout');
+
 });
 
-Route::prefix('dashboard')->group(function () {
+Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
 
     Route::view('/', 'backend.dashboard')
         ->name('dashboard');
@@ -148,14 +154,26 @@ Route::prefix('dashboard')->group(function () {
     //Routes for Quiz
     Route::prefix('quiz')->group(function () {
 
-        Route::view('/', 'backend.quiz.all')
+        Route::get('/', [QuizController::class, 'index'])
             ->name('quiz.all');
 
-        Route::view('/add', 'backend.quiz.add')
+        Route::get('/add', [QuizController::class, 'create'])
+            ->name('quiz.new');
+        
+        Route::post('/add', [QuizController::class, 'store'])
             ->name('quiz.new');
 
-        Route::view('/view/{id}', 'backend.quiz.single')
+        Route::post('/add/courses/{id?}', [QuizController::class, 'courses'])
+            ->name('quiz.courses');
+
+        Route::view('/view/{id?}', 'backend.quiz.single')
             ->name('quiz.view');
+        
+        Route::get('/question/remove/{no}', [QuizController::class, 'removeQuestion'])
+            ->name('question.cancel');
+        
+        Route::post('/quiz/save', [QuizController::class, 'saveCurrentQuiz'])
+            ->name('quiz.save');
     });
 
     Route::prefix('school')->group(function() {
@@ -168,3 +186,4 @@ Route::prefix('dashboard')->group(function () {
 
 });
 require __DIR__.'/auth.php';
+

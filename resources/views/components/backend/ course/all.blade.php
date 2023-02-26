@@ -6,10 +6,12 @@
 
     <div class="d-flex flex-column flex-sm-row flex-wrap mb-headings align-items-start align-items-sm-center">
         <div class="flex mb-2 mb-sm-0">
-            <h1 class="h2">Manage Courses</h1>
+            <h1 class="h2">{{ Auth::check() ? "Manage Courses" : "My Courses" }}</h1>
         </div>
-        <a href="{{ route('course.add') }}"
-           class="btn btn-success">Add course</a>
+        @auth
+            <a href="{{ route('course.add') }}" class="btn btn-success">Add course</a>
+        @endauth
+        
     </div>
     <div class="row">
 

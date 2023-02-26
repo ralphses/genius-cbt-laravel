@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @component('components.backend.quiz.add')
+    @component('components.backend.quiz.add', ['courses' => $courses])
     @endcomponent
 
 @endsection

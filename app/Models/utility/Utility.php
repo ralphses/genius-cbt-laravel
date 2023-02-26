@@ -2,6 +2,8 @@
 
 namespace App\Models\utility;
 
+use Illuminate\Support\Collection;
+
 class Utility
 {
 
@@ -27,5 +29,7 @@ class Utility
     ];
 
     public const SCHOOL_NAME = "FEDERAL UNIVERSITY OF LAFIA";
+
+    public static Collection $currentQuestion;
 
 }
