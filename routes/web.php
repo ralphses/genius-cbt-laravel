@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentsController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,21 @@ Route::prefix('students')->group(function () {
 
     Route::post('/logout', [StudentsController::class, 'logout'])
         ->name('student.logout');
+
+    Route::get('/dashboard', [StudentsController::class, 'dashboard'])
+        ->name('student.dashboard');
+
+    Route::get('/courses/{id}', [StudentsController::class, 'studentCourses'])
+        ->name('student.courses');
+
+    Route::prefix('quiz')->group(function() {
+
+        Route::get('/{id}', [QuizController::class, 'startQuiz'])
+            ->name('quiz.start');
+
+        Route::get('/submit/{id}', [QuizController::class, 'submit'])
+            ->name('quiz.submit');
+    });
 
 });
 
@@ -144,7 +160,7 @@ Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () 
     //Routes for Staff
     Route::prefix('staff')->group(function () {
 
-        Route::view('/', 'backend.staff.all')
+        Route::get('/', [StaffController::class, 'index'])
             ->name('staff.all');
 
         Route::view('/view/{id}', 'backend.staff.single')

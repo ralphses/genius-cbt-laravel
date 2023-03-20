@@ -29,7 +29,6 @@ class NewStudentRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required', 'email', Rule::unique('students', 'email')],
-            'image' => ['required', Rule::imageFile()],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'matric' => ['required', Rule::exists('students', 'matric')],
             'level' => ['required', Rule::in(array_values(Utility::LEVELS))]

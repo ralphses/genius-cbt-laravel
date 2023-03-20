@@ -7,6 +7,8 @@ use App\Models\Course;
 use App\Models\Question as ModelsQuestion;
 use App\Models\Quiz;
 use App\Models\utility\Question;
+use App\Models\utility\Quiz as UtilityQuiz;
+use App\Models\utility\Result;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -16,7 +18,6 @@ class QuizController extends Controller
     }
 
     public function create() {
-        // dd(session()->all());
         return view('backend.quiz.add', ['courses' => Course::all()]);
     }
 
@@ -34,6 +35,7 @@ class QuizController extends Controller
             'title' => $request->get('quiz-title'),
             'type' => $request->get('quiz-type'),
             'date' => $request->get('quiz-date'),
+            'duration' => $request->get('quiz_duration'),
             'no_options' => $noOfOptions,
             'no_questions' => $totalNoOfQuestions,
             'no_answerable_questions' => $noOfAnswerableQuestions
@@ -115,5 +117,113 @@ class QuizController extends Controller
 
         return redirect(route('quiz.all'));
 
+    }
+
+    public function startQuiz(Request $request) {
+
+        $quizId = $request->id;
+
+        try {
+
+            $quiz = Quiz::find($quizId);
+
+            $questions = $this->prepareQuestions($quiz);
+
+            $thisQuiz = $this->prepareQuiz($quiz);
+
+            session()->put('quiz', $thisQuiz);
+            session()->put('questions', $questions);
+
+            return view('backend.students.start-quiz', ['quiz' => $thisQuiz, 'questions' => $questions]);
+
+        } catch (\Throwable $th) {
+            return redirect(route('student.logout'));
+        }
+    }
+
+    public function prepareQuestions(Quiz $quiz) {
+
+        return $quiz->questions->map(function($question) use($quiz) {
+
+            $que = new Question();
+
+            $que->id = $question->id;
+            $que->question = $question->question;
+            $que->options = $this->prepareOptions($question);
+            $que->correctOption = $question->correct_option;
+
+            return $que;
+
+        })->shuffle()->all();
+
+    }
+
+    public function prepareQuiz(Quiz $quiz) {
+
+        $qu = new UtilityQuiz();
+
+        $qu->courseTitle = Course::find($quiz->course_id)->title;
+        $qu->title = $quiz->title;
+        $qu->date = $quiz->date;
+        $qu->type = $quiz->type;
+        $qu->noOptions = $quiz->no_options;
+        $qu->noQuestions = $quiz->no_answerable_questions;
+        $qu->duration = $quiz->duration;
+        $qu->id = $quiz->id;
+        
+        return $qu;
+
+
+    }
+
+    public function prepareOptions(ModelsQuestion $question) {
+
+        $allOptions = [];
+
+        $options = explode('|', $question->options);
+        $start = 65;
+
+        for($i = 0; $i < count($options); $i++) {
+            $allOptions[chr($start + $i)] = $options[$i];
+        }
+
+        return $allOptions;
+
+    }
+
+    public function submit(Request $request) {
+
+        $answers = $request->all();
+
+        $answeredQuestions = [];
+
+        $realQuestions = session()->get('questions');
+
+        foreach($realQuestions as $que) {
+
+            $an = $answers[$que->id] ?? false;
+
+            if($an) {
+                $que->choosedAnswer = $answers[$que->id];
+            }
+            $que->correct = $que->choosedAnswer == $que->correctOption;
+
+        }
+
+        //filter correct questions
+        $correctQuestions = collect($realQuestions)->filter(function($va) {return $va->correct; });
+        $incorrectQuestions = collect($realQuestions)->filter(function($va) {return !$va->correct; });
+        $unansweredQuestions = collect($realQuestions)->filter(function($va) {return $va->choosedAnswer == "0"; });
+
+        $result = new Result();
+
+        $result->questions = collect($realQuestions);
+        $result->incorrect = $incorrectQuestions->count();
+        $result->correct = $correctQuestions->count();
+        $result->unAnswered = $unansweredQuestions->count();
+
+        // session()->forget(['quiz', 'questions']);
+
+        return view('backend.students.result', ['result' => $result]);
     }
 }

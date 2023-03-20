@@ -288,6 +288,10 @@
 <script src="{{ asset('assets/backend/vendor/moment.min.js') }}"></script>
 <script src="{{ asset('assets/backend/vendor/moment-range.js') }}"></script>
 
+<script src="{{ asset("assets/backend/vendor/jquery.countdown.min.js") }}"></script>
+<script src="{{ asset("assets/backend/js/countdown.js") }}"></script>
+
+
 
 <!-- Student Dashboard Page JS -->
 <!-- <script src="assets/js/chartjs-rounded-bar.js"></script> -->

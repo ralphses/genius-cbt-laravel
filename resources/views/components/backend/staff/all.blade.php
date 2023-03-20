@@ -21,66 +21,53 @@
                          data-toggle="lists"
                          data-lists-values='["js-lists-values-employee-name"]'>
 
-                        <form action="" method="GET">
-                            <div class="search-form search-form--light mb-3">
-                                <input type="text"
-                                       class="form-control search"
-                                       name="keywords"
-                                       placeholder="Search staff">
-                                <button class="btn"
-                                        type="submit"
-                                        role="button"><i class="material-icons">search</i></button>
-                            </div>
-                        </form>
-
                         <table class="table mb-0">
                             <thead>
                             <tr>
-
-
-                                <th style="width: 20%;">Staff ID</th>
+                                <th style="width: 20%;">#</th>
                                 <th style="width: 40%;">Name</th>
-
-                                <th style="width: 15%;">Department</th>
-                                <th style="width: 10%;">Position</th>
                                 <th style="width: 20%;">Actions</th>
                             </tr>
                             </thead>
                             <tbody class="list" id="search">
 
-                            <tr>
-                                <td>
+                                @foreach ($staffs as $staff)
 
-                                    <span class="js-lists-values-employee-name">Kalum Atherton</span>
+                                <tr>
+                                    <td>
+    
+                                        <span class="js-lists-values-employee-name">{{ ++$loop->index }}</span>
+    
+                                    </td>
+    
+                                    <td>{{ $staff->name }}</td>
+                                    <td>
+                                        <div class="d-flex d-inline-flex">
+    
+                                            <button  style="background-color: transparent; border: transparent"><a href="{{ route('staff.view', ['id' => 1]) }}" class="text-muted" data-bs-toggle="tooltip" title="View"><i class="fa fa-eye" ></i></a></button>
+    
+                                            <form action="" method="POST">
+    
+                                                @csrf
+                                                @method('DELETE')
+    
+                                                <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Delete"><i class="fa fa-trash" style="color: red"></i></button>
+                                            </form>
+    
+                                            <form action="" method="POST">
+    
+                                                @csrf
+                                                @method('PATCH')
+    
+                                                <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Approve"><i class="fa fa-check" style="color: red"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    
+                                @endforeach
 
-                                </td>
-
-                                <td><small class="text-muted">3 days ago</small></td>
-                                <td>&dollar;12,402</td>
-                                <td><a href="" class="text-muted"><i class="material-icons">more_vert</i></a></td>
-                                <td>
-                                    <div class="d-flex d-inline-flex">
-
-                                        <button  style="background-color: transparent; border: transparent"><a href="{{ route('staff.view', ['id' => 1]) }}" class="text-muted" data-bs-toggle="tooltip" title="View"><i class="fa fa-eye" ></i></a></button>
-
-                                        <form action="" method="POST">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Delete"><i class="fa fa-trash" style="color: red"></i></button>
-                                        </form>
-
-                                        <form action="" method="POST">
-
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <button type="submit" class="btn btn-link btn-danger" style="background-color: transparent; border: transparent" data-bs-toggle="tooltip" title="Approve"><i class="fa fa-check" style="color: red"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                          
 
 
                             </tbody>

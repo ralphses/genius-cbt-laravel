@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id');
 
             $table->string('title');
+            $table->unsignedBigInteger('duration');
             $table->string('type');
             $table->date('date');
 

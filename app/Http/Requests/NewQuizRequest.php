@@ -32,7 +32,9 @@ class NewQuizRequest extends FormRequest
             'quiz-date' => ['required'],
             'quiz-answer-options' => ['required', 'integer', Rule::in([2,3,4,5,6])],
             'quiz-total-questions' => ['required', 'integer'],
-            'quiz-answerable-questions' => ['required', 'integer']
+            'quiz-answerable-questions' => ['required', 'integer'],
+            'quiz_duration' => ['required', 'integer']
+
         ];
     }
 }

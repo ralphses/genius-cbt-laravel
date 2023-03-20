@@ -11,7 +11,7 @@ class Quiz extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id', 'date', 'title', 'type', 'no_options', 'no_answerable_questions', 'no_questions'];
+    protected $fillable = ['course_id', 'date', 'title', 'type', 'no_options', 'no_answerable_questions', 'no_questions', 'duration'];
 
     public function questions(): HasMany {
         return $this->hasMany(Question::class);

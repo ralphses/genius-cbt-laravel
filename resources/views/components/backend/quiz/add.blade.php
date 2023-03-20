@@ -139,6 +139,25 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label for="quiz_duration"
+                           class="col-sm-3 col-form-label form-label">Duration:</label>
+                    <div class="col-sm-9 col-md-4">
+                        <input id="quiz_duration"
+                               type="number"
+                               {{ session('questionInfo') ? "disabled" : "" }}
+                               name="quiz_duration"
+                               class="form-control"
+                               value="{{ old('quiz_duration') }}"
+                               placeholder="Enter duration in minutes">
+
+                        @if($errors->any('quiz_duration'))
+                            <p style="color: red; font-size: small">{{ $errors->first('quiz_duration') }}</p>
+                        @endif     
+
+                    </div>
+                </div>
+
 
                 @if (!session('questionInfo'))
                     <div class="form-group row mb-0">
@@ -231,8 +250,7 @@
             </div>
                 <div class="form-group row mb-0">
                     <div class="col-sm-9 offset-sm-3">
-                        <button type="submit"
-                                class="btn btn-success" id="saveQuestion">Add Question</button>
+                        <button type="submit" class="btn btn-success" id="saveQuestion">Add Question</button>
                     </div>
                 </div>
 

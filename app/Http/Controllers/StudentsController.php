@@ -7,6 +7,7 @@ use App\Http\Requests\StudentAuthenticationRequest;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Faculty;
+use App\Models\Quiz;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -171,7 +172,7 @@ class StudentsController extends Controller
      * @param  \App\Models\Students  $students
      * @return \Illuminate\Http\Response
      */
-    public function new(Request $request)
+    public function new()
     {
         return view('backend.students.add');
     }
@@ -198,23 +199,34 @@ class StudentsController extends Controller
             return back()->withErrors(['matric' => 'Credentials do not match']);
         }
 
-        // dd($student);
-
         session()->put('student', $student);
 
-        return redirect(route('dashboard'));
+        return redirect(route('student.dashboard'));
 
     }
 
     public function logout(Request $request) {
+        
         $request->session()->flush();
 
         return redirect(route('welcome'));
     }
 
+
+    public function dashboard(Request $request) {
+
+        $student = $request->session()->get('student');
+
+        $studentQuizzes = Quiz::whereIn('course_id', $student->courses->map(function($value) { return $value->id; }))->get();
+
+        return view('backend.students.student-dashboard', ['courses' => $student->courses, 'quizzes' => $studentQuizzes]);
+    }
+
+
     private function storeImage(Request $request): array|string
     {
 
+     if($request->has('image')) {
         $name = str_replace(' ', '', $request->get('name') . $request->get('matric'));
         $newImage = uniqid() . '-' . $name . '.' . $request->file('image')->extension();
 
@@ -223,6 +235,9 @@ class StudentsController extends Controller
 
         return str_replace(str_replace('app\Http\Controllers', '', __DIR__).'public', '', $move);
 
+     }
+
+     return "";
     }
 
 }
