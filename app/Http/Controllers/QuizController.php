@@ -94,13 +94,11 @@ class QuizController extends Controller
         //save quiz
         $quiz = Quiz::create($currentQuiz->getAttributes());
 
-        // dd($quiz);
-
         //save questions for this quiz
-
         for($i = 0; $quiz->no_questions; $i++) {
 
             if(session()->has($i)) {
+
                 $currentQue = session()->get($i);
 
                 ModelsQuestion::create([
@@ -221,8 +219,6 @@ class QuizController extends Controller
         $result->incorrect = $incorrectQuestions->count();
         $result->correct = $correctQuestions->count();
         $result->unAnswered = $unansweredQuestions->count();
-
-        // session()->forget(['quiz', 'questions']);
 
         return view('backend.students.result', ['result' => $result]);
     }
