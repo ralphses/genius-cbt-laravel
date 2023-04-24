@@ -34,10 +34,7 @@
                                             <p class="text-black-70 mr-2">{{ $course->code }}</p>
                                         </div>
                                     </div>
-                                    <div class="text-center">
-                                        <a href="{{ route('course.update', ['id' => $course->id]) }}"
-                                        class="btn btn-sm btn-white">Edit</a>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -51,8 +48,7 @@
                             <i class="material-icons">more_vert</i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item"
-                            href="{{ route('course.update', ['id' => 1]) }}">Edit course</a>
+                            
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('course.delete', ['id' => $course->id]) }}" method="POST">
                                 @csrf

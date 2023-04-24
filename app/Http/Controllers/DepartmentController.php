@@ -27,7 +27,6 @@ class DepartmentController extends Controller
     public function create()
     {
         return response()->view('backend.department.add', ['faculties' => Faculty::all()]);
-    
     }
 
     /**

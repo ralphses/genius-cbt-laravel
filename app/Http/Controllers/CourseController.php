@@ -13,27 +13,30 @@ use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
 
         $courses = (Auth::check()) ? Course::all() : "";
         $student = $request->session()->get('student');
 
-        if($student) {
+        if ($student) {
             $courses = $student->courses;
         }
 
-        if(!$courses) {
+        if (!$courses) {
             return redirect(route('welcome'));
         }
 
         return view('backend.course.all', ['courses' => $courses]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('backend.course.add', ['departments' => Department::all(), 'semesters' => Utility::SEMESTER]);
     }
 
-    public function store(NewCourseRequest $request) {
+    public function store(NewCourseRequest $request)
+    {
 
         $request->validated();
 
@@ -47,24 +50,24 @@ class CourseController extends Controller
         ]);
 
         return redirect()->route('course.all');
-
     }
 
-    public function destroy(Request $request) {
+    public function destroy(Request $request)
+    {
 
         Course::destroy($request->id);
         return redirect()->route('course.all');
     }
 
-    public function edit(Request $request) {
-        if(Auth::user() == $request->user()) {
+    public function edit(Request $request)
+    {
+        if (Auth::user() == $request->user()) {
             return view('backend.course.update', ['course' => Course::find($request->id), 'departments' => Department::all()]);
-        }
-
-        else return redirect('/');
+        } else return redirect('/');
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
 
         $id = $request->id;
 
@@ -89,6 +92,5 @@ class CourseController extends Controller
         ]);
 
         return redirect(route('course.all'));
-        
     }
 }

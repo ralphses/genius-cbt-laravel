@@ -165,22 +165,9 @@
                             </li>
                             @endauth
                             <li class="nav-item dropdown active">
-                                <a href="{{ route('quiz.all') }}" class="nav-link">My Quiz</a>
+                                <a href="{{ route('quiz.all') }}" class="nav-link">My Examinations</a>
                             </li>
-                            @auth
-                            <li class="nav-item dropdown active">
-                                <a href="#"
-                                   class="nav-link dropdown-toggle"
-                                   data-toggle="dropdown">Student</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item active"
-                                       href="fixed-student-dashboard.html">Dashboard</a>
-                                   
-                                </div>
-                            </li>
-                            @endauth
-                            
-
+                           
                         </ul>
                     </div>
                 </div>

@@ -13,15 +13,18 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('backend.quiz.all', ['quizzes' => Quiz::all()]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('backend.quiz.add', ['courses' => Course::all()]);
     }
 
-    public function store(NewQuizRequest $request) {
+    public function store(NewQuizRequest $request)
+    {
 
         $request->validated();
 
@@ -43,24 +46,24 @@ class QuizController extends Controller
 
         $options = [];
 
-        for($i = 65; $i < 65+$noOfOptions; $i++) {
+        for ($i = 65; $i < 65 + $noOfOptions; $i++) {
             $options[] = chr($i);
         }
 
         $questionInfo = ['quiz' => $quiz, 'options' => $options];
 
         session()->put('questionInfo', $questionInfo);
-        
-        return redirect()->back()->withInput();
 
+        return redirect()->back()->withInput();
     }
 
-    public function courses(Request $request) {
+    public function courses(Request $request)
+    {
 
         $options = [];
         $currentOption = 64;
 
-        foreach($request->get('options') as $option) {
+        foreach ($request->get('options') as $option) {
             $options[chr(++$currentOption)] = $option;
         }
 
@@ -76,18 +79,19 @@ class QuizController extends Controller
         session()->put($questionNo, $question);
 
         return redirect()->back();
-
     }
 
-    public function removeQuestion(Request $request) {
+    public function removeQuestion(Request $request)
+    {
         session()->forget($request->no);
         return back()->withInput();
     }
 
-    public function saveCurrentQuiz() {
+    public function saveCurrentQuiz()
+    {
 
         $questionInfo = session()->get('questionInfo');
-        
+
         $currentQuiz = $questionInfo['quiz'];
         $options = $questionInfo['options'];
 
@@ -95,9 +99,9 @@ class QuizController extends Controller
         $quiz = Quiz::create($currentQuiz->getAttributes());
 
         //save questions for this quiz
-        for($i = 0; $quiz->no_questions; $i++) {
+        for ($i = 0; $quiz->no_questions; $i++) {
 
-            if(session()->has($i)) {
+            if (session()->has($i)) {
 
                 $currentQue = session()->get($i);
 
@@ -107,17 +111,16 @@ class QuizController extends Controller
                     'correct_option' => $currentQue->correctOption,
                     'quiz_id' => $quiz->id
                 ]);
-            }
-            else break;
+            } else break;
         }
 
         session()->flush();
 
         return redirect(route('quiz.all'));
-
     }
 
-    public function startQuiz(Request $request) {
+    public function startQuiz(Request $request)
+    {
 
         $quizId = $request->id;
 
@@ -133,15 +136,15 @@ class QuizController extends Controller
             session()->put('questions', $questions);
 
             return view('backend.students.start-quiz', ['quiz' => $thisQuiz, 'questions' => $questions]);
-
         } catch (\Throwable $th) {
             return redirect(route('student.logout'));
         }
     }
 
-    public function prepareQuestions(Quiz $quiz) {
+    public function prepareQuestions(Quiz $quiz)
+    {
 
-        return $quiz->questions->map(function($question) use($quiz) {
+        return $quiz->questions->map(function ($question) use ($quiz) {
 
             $que = new Question();
 
@@ -151,12 +154,11 @@ class QuizController extends Controller
             $que->correctOption = $question->correct_option;
 
             return $que;
-
         })->shuffle()->all();
-
     }
 
-    public function prepareQuiz(Quiz $quiz) {
+    public function prepareQuiz(Quiz $quiz)
+    {
 
         $qu = new UtilityQuiz();
 
@@ -168,28 +170,27 @@ class QuizController extends Controller
         $qu->noQuestions = $quiz->no_answerable_questions;
         $qu->duration = $quiz->duration;
         $qu->id = $quiz->id;
-        
+
         return $qu;
-
-
     }
 
-    public function prepareOptions(ModelsQuestion $question) {
+    public function prepareOptions(ModelsQuestion $question)
+    {
 
         $allOptions = [];
 
         $options = explode('|', $question->options);
         $start = 65;
 
-        for($i = 0; $i < count($options); $i++) {
+        for ($i = 0; $i < count($options); $i++) {
             $allOptions[chr($start + $i)] = $options[$i];
         }
 
         return $allOptions;
-
     }
 
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
 
         $answers = $request->all();
 
@@ -197,21 +198,26 @@ class QuizController extends Controller
 
         $realQuestions = session()->get('questions');
 
-        foreach($realQuestions as $que) {
+        foreach ($realQuestions as $que) {
 
             $an = $answers[$que->id] ?? false;
 
-            if($an) {
+            if ($an) {
                 $que->choosedAnswer = $answers[$que->id];
             }
             $que->correct = $que->choosedAnswer == $que->correctOption;
-
         }
 
         //filter correct questions
-        $correctQuestions = collect($realQuestions)->filter(function($va) {return $va->correct; });
-        $incorrectQuestions = collect($realQuestions)->filter(function($va) {return !$va->correct; });
-        $unansweredQuestions = collect($realQuestions)->filter(function($va) {return $va->choosedAnswer == "0"; });
+        $correctQuestions = collect($realQuestions)->filter(function ($va) {
+            return $va->correct;
+        });
+        $incorrectQuestions = collect($realQuestions)->filter(function ($va) {
+            return !$va->correct;
+        });
+        $unansweredQuestions = collect($realQuestions)->filter(function ($va) {
+            return $va->choosedAnswer == "0";
+        });
 
         $result = new Result();
 
